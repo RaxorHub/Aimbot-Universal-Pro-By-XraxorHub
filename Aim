@@ -1,0 +1,1841 @@
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local player = Players.LocalPlayer
+local playerGui = player.PlayerGui
+
+local oldGui = playerGui:FindFirstChild("XraxorHub_GUI")
+if oldGui then oldGui:Destroy() end
+local oldBlur = game:GetService("Lighting"):FindFirstChild("XraxorBlur")
+if oldBlur then oldBlur:Destroy() end
+
+local blur = Instance.new("BlurEffect")
+blur.Name = "XraxorBlur"
+blur.Size = 18
+blur.Parent = game:GetService("Lighting")
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "XraxorHub_GUI"
+screenGui.ResetOnSpawn = false
+screenGui.IgnoreGuiInset = true
+screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+screenGui.DisplayOrder = 999
+screenGui.Parent = playerGui
+
+-- SOUND FUNCTION
+local function playClick()
+    local sound = Instance.new("Sound")
+    sound.SoundId = "rbxassetid://6042053626"
+    sound.Volume = 0.5
+    sound.Parent = screenGui
+    sound:Play()
+    game:GetService("Debris"):AddItem(sound, 1)
+end
+
+local overlay = Instance.new("Frame")
+overlay.Size = UDim2.new(1, 0, 1, 0)
+overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+overlay.BackgroundTransparency = 0.35
+overlay.BorderSizePixel = 0
+overlay.ZIndex = 1
+overlay.Parent = screenGui
+
+local main = Instance.new("Frame")
+main.Name = "Main"
+main.Size = UDim2.new(1, 0, 1, 0)
+main.Position = UDim2.new(0, 0, 0, 0)
+main.BackgroundColor3 = Color3.fromRGB(10, 10, 12)
+main.BorderSizePixel = 0
+main.ZIndex = 2
+main.Parent = screenGui
+
+local mainStroke = Instance.new("UIStroke", main)
+mainStroke.Color = Color3.fromRGB(40, 40, 50)
+mainStroke.Thickness = 1.5
+
+main.BackgroundTransparency = 1
+TweenService:Create(main, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+    BackgroundTransparency = 0
+}):Play()
+
+-- SIDEBAR
+local sidebar = Instance.new("Frame")
+sidebar.Size = UDim2.new(0, 200, 1, 0)
+sidebar.BackgroundColor3 = Color3.fromRGB(13, 13, 16)
+sidebar.BorderSizePixel = 0
+sidebar.ZIndex = 3
+sidebar.Parent = main
+Instance.new("UICorner", sidebar).CornerRadius = UDim.new(0, 14)
+
+local sidebarFix = Instance.new("Frame")
+sidebarFix.Size = UDim2.new(0, 20, 1, 0)
+sidebarFix.Position = UDim2.new(1, -20, 0, 0)
+sidebarFix.BackgroundColor3 = Color3.fromRGB(13, 13, 16)
+sidebarFix.BorderSizePixel = 0
+sidebarFix.ZIndex = 3
+sidebarFix.Parent = sidebar
+
+local sideDiv = Instance.new("Frame")
+sideDiv.Size = UDim2.new(0, 1, 1, 0)
+sideDiv.Position = UDim2.new(1, 0, 0, 0)
+sideDiv.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
+sideDiv.BorderSizePixel = 0
+sideDiv.ZIndex = 4
+sideDiv.Parent = sidebar
+
+-- LOGO
+local logoArea = Instance.new("Frame")
+logoArea.Size = UDim2.new(1, 0, 0, 70)
+logoArea.BackgroundTransparency = 1
+logoArea.ZIndex = 4
+logoArea.Parent = sidebar
+
+local logoIcon = Instance.new("TextLabel")
+logoIcon.Size = UDim2.new(0, 32, 0, 32)
+logoIcon.Position = UDim2.new(0, 14, 0.5, -16)
+logoIcon.BackgroundColor3 = Color3.fromRGB(220, 220, 255)
+logoIcon.Text = "X"
+logoIcon.TextSize = 18
+logoIcon.TextColor3 = Color3.fromRGB(10, 10, 12)
+logoIcon.Font = Enum.Font.GothamBold
+logoIcon.BorderSizePixel = 0
+logoIcon.ZIndex = 5
+logoIcon.Parent = logoArea
+Instance.new("UICorner", logoIcon).CornerRadius = UDim.new(0, 8)
+
+local logoText = Instance.new("TextLabel")
+logoText.Size = UDim2.new(0, 120, 0, 20)
+logoText.Position = UDim2.new(0, 54, 0, 16)
+logoText.BackgroundTransparency = 1
+logoText.Text = "XraxorHub"
+logoText.TextColor3 = Color3.fromRGB(240, 240, 255)
+logoText.TextSize = 15
+logoText.Font = Enum.Font.GothamBold
+logoText.TextXAlignment = Enum.TextXAlignment.Left
+logoText.ZIndex = 5
+logoText.Parent = logoArea
+
+local logoSub = Instance.new("TextLabel")
+logoSub.Size = UDim2.new(0, 120, 0, 14)
+logoSub.Position = UDim2.new(0, 54, 0, 36)
+logoSub.BackgroundTransparency = 1
+logoSub.Text = "version 1.0"
+logoSub.TextColor3 = Color3.fromRGB(120, 120, 140)
+logoSub.TextSize = 10
+logoSub.Font = Enum.Font.Gotham
+logoSub.TextXAlignment = Enum.TextXAlignment.Left
+logoSub.ZIndex = 5
+logoSub.Parent = logoArea
+
+local logoDiv = Instance.new("Frame")
+logoDiv.Size = UDim2.new(0.8, 0, 0, 1)
+logoDiv.Position = UDim2.new(0.1, 0, 0, 70)
+logoDiv.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
+logoDiv.BorderSizePixel = 0
+logoDiv.ZIndex = 4
+logoDiv.Parent = sidebar
+
+-- AVATAR
+local avatarSection = Instance.new("Frame")
+avatarSection.Size = UDim2.new(1, 0, 0, 110)
+avatarSection.Position = UDim2.new(0, 0, 0, 78)
+avatarSection.BackgroundTransparency = 1
+avatarSection.ZIndex = 4
+avatarSection.Parent = sidebar
+
+local avatarImg = Instance.new("ImageLabel")
+avatarImg.Size = UDim2.new(0, 64, 0, 64)
+avatarImg.Position = UDim2.new(0.5, -32, 0, 10)
+avatarImg.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+avatarImg.Image = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. player.UserId .. "&width=420&height=420&format=png"
+avatarImg.BorderSizePixel = 0
+avatarImg.ZIndex = 5
+avatarImg.Parent = avatarSection
+Instance.new("UICorner", avatarImg).CornerRadius = UDim.new(0, 10)
+
+local avatarStroke = Instance.new("UIStroke", avatarImg)
+avatarStroke.Color = Color3.fromRGB(200, 200, 220)
+avatarStroke.Thickness = 1.5
+avatarStroke.Transparency = 0.5
+
+local userNameLabel = Instance.new("TextLabel")
+userNameLabel.Size = UDim2.new(1, -10, 0, 18)
+userNameLabel.Position = UDim2.new(0, 5, 0, 78)
+userNameLabel.BackgroundTransparency = 1
+userNameLabel.Text = player.Name
+userNameLabel.TextColor3 = Color3.fromRGB(230, 230, 245)
+userNameLabel.TextSize = 12
+userNameLabel.Font = Enum.Font.GothamBold
+userNameLabel.ZIndex = 5
+userNameLabel.Parent = avatarSection
+
+local userIdLabel = Instance.new("TextLabel")
+userIdLabel.Size = UDim2.new(1, -10, 0, 14)
+userIdLabel.Position = UDim2.new(0, 5, 0, 95)
+userIdLabel.BackgroundTransparency = 1
+userIdLabel.Text = "ID: " .. player.UserId
+userIdLabel.TextColor3 = Color3.fromRGB(80, 80, 100)
+userIdLabel.TextSize = 10
+userIdLabel.Font = Enum.Font.Gotham
+userIdLabel.ZIndex = 5
+userIdLabel.Parent = avatarSection
+
+local badgeFrame = Instance.new("Frame")
+badgeFrame.Size = UDim2.new(0, 50, 0, 18)
+badgeFrame.Position = UDim2.new(0.5, -25, 0, 50)
+badgeFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 28)
+badgeFrame.BorderSizePixel = 0
+badgeFrame.ZIndex = 6
+badgeFrame.Parent = avatarSection
+Instance.new("UICorner", badgeFrame).CornerRadius = UDim.new(0, 9)
+
+local badgeStroke = Instance.new("UIStroke", badgeFrame)
+badgeStroke.Color = Color3.fromRGB(180, 180, 210)
+badgeStroke.Thickness = 1
+badgeStroke.Transparency = 0.4
+
+local badgeText = Instance.new("TextLabel")
+badgeText.Size = UDim2.new(1, 0, 1, 0)
+badgeText.BackgroundTransparency = 1
+badgeText.Text = "FREE"
+badgeText.TextColor3 = Color3.fromRGB(200, 200, 230)
+badgeText.TextSize = 9
+badgeText.Font = Enum.Font.GothamBold
+badgeText.ZIndex = 7
+badgeText.Parent = badgeFrame
+
+local avatarDiv = Instance.new("Frame")
+avatarDiv.Size = UDim2.new(0.8, 0, 0, 1)
+avatarDiv.Position = UDim2.new(0.1, 0, 0, 192)
+avatarDiv.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
+avatarDiv.BorderSizePixel = 0
+avatarDiv.ZIndex = 4
+avatarDiv.Parent = sidebar
+
+-- CONTENT AREA
+local contentArea = Instance.new("Frame")
+contentArea.Size = UDim2.new(1, -200, 1, 0)
+contentArea.Position = UDim2.new(0, 200, 0, 0)
+contentArea.BackgroundTransparency = 1
+contentArea.ZIndex = 3
+contentArea.Parent = main
+
+-- TOP BAR
+local topBar = Instance.new("Frame")
+topBar.Size = UDim2.new(1, 0, 0, 52)
+topBar.BackgroundColor3 = Color3.fromRGB(13, 13, 16)
+topBar.BorderSizePixel = 0
+topBar.ZIndex = 4
+topBar.Parent = contentArea
+Instance.new("UICorner", topBar).CornerRadius = UDim.new(0, 14)
+
+local topBarFix = Instance.new("Frame")
+topBarFix.Size = UDim2.new(0, 20, 1, 0)
+topBarFix.BackgroundColor3 = Color3.fromRGB(13, 13, 16)
+topBarFix.BorderSizePixel = 0
+topBarFix.ZIndex = 4
+topBarFix.Parent = topBar
+
+local topBarDiv = Instance.new("Frame")
+topBarDiv.Size = UDim2.new(1, 0, 0, 1)
+topBarDiv.Position = UDim2.new(0, 0, 1, -1)
+topBarDiv.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+topBarDiv.BorderSizePixel = 0
+topBarDiv.ZIndex = 5
+topBarDiv.Parent = topBar
+
+local pageTitle = Instance.new("TextLabel")
+pageTitle.Size = UDim2.new(0.6, 0, 1, 0)
+pageTitle.Position = UDim2.new(0, 20, 0, 0)
+pageTitle.BackgroundTransparency = 1
+pageTitle.Text = "  Key System"
+pageTitle.TextColor3 = Color3.fromRGB(220, 220, 235)
+pageTitle.TextSize = 14
+pageTitle.Font = Enum.Font.GothamBold
+pageTitle.TextXAlignment = Enum.TextXAlignment.Left
+pageTitle.ZIndex = 5
+pageTitle.Parent = topBar
+
+local function makeTopBtn(text, color, xPos)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(0, 26, 0, 26)
+    btn.Position = UDim2.new(1, xPos, 0.5, -13)
+    btn.BackgroundColor3 = color
+    btn.Text = text
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.TextSize = 11
+    btn.Font = Enum.Font.GothamBold
+    btn.BorderSizePixel = 0
+    btn.ZIndex = 6
+    btn.Parent = topBar
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
+    return btn
+end
+
+local closeBtn = makeTopBtn("X", Color3.fromRGB(200, 55, 55), -40)
+
+closeBtn.MouseButton1Click:Connect(function()
+    playClick()
+    TweenService:Create(main, TweenInfo.new(0.3, Enum.EasingStyle.Quart), {
+        BackgroundTransparency = 1
+    }):Play()
+    task.wait(0.3)
+    blur:Destroy()
+    screenGui:Destroy()
+end)
+
+-- KEY PANEL
+local keyPanel = Instance.new("Frame")
+keyPanel.Size = UDim2.new(1, -30, 1, -72)
+keyPanel.Position = UDim2.new(0, 15, 0, 62)
+keyPanel.BackgroundTransparency = 1
+keyPanel.ZIndex = 4
+keyPanel.Visible = true
+keyPanel.Parent = contentArea
+
+local statusBar = Instance.new("Frame")
+statusBar.Size = UDim2.new(1, 0, 0, 44)
+statusBar.BackgroundColor3 = Color3.fromRGB(15, 15, 18)
+statusBar.BorderSizePixel = 0
+statusBar.ZIndex = 5
+statusBar.Parent = keyPanel
+Instance.new("UICorner", statusBar).CornerRadius = UDim.new(0, 10)
+
+local statusStroke = Instance.new("UIStroke", statusBar)
+statusStroke.Color = Color3.fromRGB(35, 35, 45)
+statusStroke.Thickness = 1
+
+local statusIcon = Instance.new("TextLabel")
+statusIcon.Size = UDim2.new(0, 30, 1, 0)
+statusIcon.Position = UDim2.new(0, 12, 0, 0)
+statusIcon.BackgroundTransparency = 1
+statusIcon.Text = "!"
+statusIcon.TextColor3 = Color3.fromRGB(220, 180, 60)
+statusIcon.TextSize = 16
+statusIcon.Font = Enum.Font.GothamBold
+statusIcon.ZIndex = 6
+statusIcon.Parent = statusBar
+
+local statusMsg = Instance.new("TextLabel")
+statusMsg.Size = UDim2.new(1, -50, 1, 0)
+statusMsg.Position = UDim2.new(0, 44, 0, 0)
+statusMsg.BackgroundTransparency = 1
+statusMsg.Text = "Enter your key to unlock XraxorHub"
+statusMsg.TextColor3 = Color3.fromRGB(170, 170, 190)
+statusMsg.TextSize = 12
+statusMsg.Font = Enum.Font.Gotham
+statusMsg.TextXAlignment = Enum.TextXAlignment.Left
+statusMsg.ZIndex = 6
+statusMsg.Parent = statusBar
+
+local inputSection = Instance.new("Frame")
+inputSection.Size = UDim2.new(1, 0, 0, 54)
+inputSection.Position = UDim2.new(0, 0, 0, 56)
+inputSection.BackgroundColor3 = Color3.fromRGB(15, 15, 18)
+inputSection.BorderSizePixel = 0
+inputSection.ZIndex = 5
+inputSection.Parent = keyPanel
+Instance.new("UICorner", inputSection).CornerRadius = UDim.new(0, 10)
+
+local inputStroke = Instance.new("UIStroke", inputSection)
+inputStroke.Color = Color3.fromRGB(35, 35, 48)
+inputStroke.Thickness = 1
+
+local lockIcon = Instance.new("TextLabel")
+lockIcon.Size = UDim2.new(0, 38, 1, 0)
+lockIcon.Position = UDim2.new(0, 6, 0, 0)
+lockIcon.BackgroundTransparency = 1
+lockIcon.Text = "[ ]"
+lockIcon.TextColor3 = Color3.fromRGB(170, 170, 190)
+lockIcon.TextSize = 14
+lockIcon.Font = Enum.Font.GothamBold
+lockIcon.ZIndex = 6
+lockIcon.Parent = inputSection
+
+local keyInput = Instance.new("TextBox")
+keyInput.Size = UDim2.new(1, -90, 1, 0)
+keyInput.Position = UDim2.new(0, 42, 0, 0)
+keyInput.BackgroundTransparency = 1
+keyInput.PlaceholderText = "Enter your key here..."
+keyInput.PlaceholderColor3 = Color3.fromRGB(65, 65, 80)
+keyInput.Text = ""
+keyInput.TextColor3 = Color3.fromRGB(210, 210, 225)
+keyInput.TextSize = 13
+keyInput.Font = Enum.Font.Gotham
+keyInput.TextXAlignment = Enum.TextXAlignment.Left
+keyInput.ClearTextOnFocus = false
+keyInput.ZIndex = 6
+keyInput.Parent = inputSection
+
+local pasteBtn = Instance.new("TextButton")
+pasteBtn.Size = UDim2.new(0, 42, 0, 28)
+pasteBtn.Position = UDim2.new(1, -48, 0.5, -14)
+pasteBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+pasteBtn.Text = "Paste"
+pasteBtn.TextColor3 = Color3.fromRGB(160, 160, 180)
+pasteBtn.TextSize = 10
+pasteBtn.Font = Enum.Font.GothamBold
+pasteBtn.BorderSizePixel = 0
+pasteBtn.ZIndex = 7
+pasteBtn.Parent = inputSection
+Instance.new("UICorner", pasteBtn).CornerRadius = UDim.new(0, 6)
+
+pasteBtn.MouseButton1Click:Connect(function()
+    playClick()
+    local ok, text = pcall(function() return getclipboard() end)
+    if ok and text then keyInput.Text = text end
+end)
+
+local btnRow = Instance.new("Frame")
+btnRow.Size = UDim2.new(1, 0, 0, 44)
+btnRow.Position = UDim2.new(0, 0, 0, 122)
+btnRow.BackgroundTransparency = 1
+btnRow.ZIndex = 5
+btnRow.Parent = keyPanel
+
+local getKeyBtn = Instance.new("TextButton")
+getKeyBtn.Size = UDim2.new(0.48, 0, 1, 0)
+getKeyBtn.BackgroundColor3 = Color3.fromRGB(22, 22, 28)
+getKeyBtn.Text = "  Get Key"
+getKeyBtn.TextColor3 = Color3.fromRGB(200, 200, 215)
+getKeyBtn.TextSize = 13
+getKeyBtn.Font = Enum.Font.GothamBold
+getKeyBtn.BorderSizePixel = 0
+getKeyBtn.ZIndex = 6
+getKeyBtn.Parent = btnRow
+Instance.new("UICorner", getKeyBtn).CornerRadius = UDim.new(0, 10)
+
+local getKeyStroke = Instance.new("UIStroke", getKeyBtn)
+getKeyStroke.Color = Color3.fromRGB(55, 55, 68)
+getKeyStroke.Thickness = 1
+
+local redeemBtn = Instance.new("TextButton")
+redeemBtn.Size = UDim2.new(0.48, 0, 1, 0)
+redeemBtn.Position = UDim2.new(0.52, 0, 0, 0)
+redeemBtn.BackgroundColor3 = Color3.fromRGB(230, 230, 245)
+redeemBtn.Text = "  Redeem Key"
+redeemBtn.TextColor3 = Color3.fromRGB(10, 10, 14)
+redeemBtn.TextSize = 13
+redeemBtn.Font = Enum.Font.GothamBold
+redeemBtn.BorderSizePixel = 0
+redeemBtn.ZIndex = 6
+redeemBtn.Parent = btnRow
+Instance.new("UICorner", redeemBtn).CornerRadius = UDim.new(0, 10)
+
+getKeyBtn.MouseEnter:Connect(function()
+    TweenService:Create(getKeyBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(30, 30, 40)}):Play()
+end)
+getKeyBtn.MouseLeave:Connect(function()
+    TweenService:Create(getKeyBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(22, 22, 28)}):Play()
+end)
+redeemBtn.MouseEnter:Connect(function()
+    TweenService:Create(redeemBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(210, 210, 225)}):Play()
+end)
+redeemBtn.MouseLeave:Connect(function()
+    TweenService:Create(redeemBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(230, 230, 245)}):Play()
+end)
+
+local VALID_KEY = "XraxorHub-Free-2025"
+
+getKeyBtn.MouseButton1Click:Connect(function()
+    playClick()
+    pcall(function() setclipboard("https://linkvertise.com/yourlink") end)
+    statusIcon.Text = ">"
+    statusIcon.TextColor3 = Color3.fromRGB(100, 180, 255)
+    statusMsg.Text = "Link copied to clipboard! Open in browser."
+    statusMsg.TextColor3 = Color3.fromRGB(100, 180, 255)
+    task.wait(3)
+    statusIcon.Text = "!"
+    statusIcon.TextColor3 = Color3.fromRGB(220, 180, 60)
+    statusMsg.Text = "Enter your key to unlock XraxorHub"
+    statusMsg.TextColor3 = Color3.fromRGB(170, 170, 190)
+end)
+
+redeemBtn.MouseButton1Click:Connect(function()
+    playClick()
+    if keyInput.Text == VALID_KEY then
+        statusIcon.Text = "v"
+        statusIcon.TextColor3 = Color3.fromRGB(80, 220, 140)
+        statusMsg.Text = "Key valid! Loading XraxorHub..."
+        statusMsg.TextColor3 = Color3.fromRGB(80, 220, 140)
+        task.wait(1.5)
+        blur:Destroy()
+        screenGui:Destroy()
+        print("XraxorHub loaded!")
+        
+        local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/RaxorHub/UI-library-raxor/refs/heads/main/XraxorCmny.lua"))()
+local CheatName = "JX-Blox Fruit"
+
+Library.Folders = {
+    Directory = CheatName,
+    Configs = CheatName .. "/Configs",
+    Assets = CheatName .. "/Assets",
+}
+
+local Accent   = Color3.fromRGB(0, 200, 255)
+local Gradient = Color3.fromRGB(0, 70, 180)
+
+Library.Theme.Accent         = Accent
+Library.Theme.AccentGradient = Gradient
+Library:ChangeTheme("Accent",         Accent)
+Library:ChangeTheme("AccentGradient", Gradient)
+
+local Window = Library:Window({
+    Name    = "XraxorHub",
+    SubName = "AIMBOT | UNIVERSAL",
+    Logo    = "1281139752"
+})
+
+local KeybindList = Library:KeybindList("Keybinds")
+Library:Notification({
+    Title       = "XraxorHub",
+    Description = " ",
+    Duration    = 5,
+    Icon        = "1281139752"
+})
+
+-- Watermark loop
+local watermarkRunning = true
+task.spawn(function()
+    while watermarkRunning do
+        local FPS = math.floor(1 / game:GetService("RunService").RenderStepped:Wait())
+        local pingValue = 0
+        pcall(function()
+            pingValue = math.floor(
+                game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue()
+            )
+        end)
+        Library:Watermark({
+            1281139752,
+            "XraxorHub",
+            "Aimbot | Universal",
+            "FPS: " .. FPS,
+            "Ping: " .. pingValue .. "ms"
+        })
+        task.wait(1)
+    end
+end)
+
+-- ======================================================
+--   SERVICES & CORE
+-- ======================================================
+local Players    = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInput  = game:GetService("UserInputService")
+local Lighting   = game:GetService("Lighting")
+local Camera     = workspace.CurrentCamera
+local LocalPlayer = Players.LocalPlayer
+
+local function D(t, props)
+    local ok, obj = pcall(Drawing.new, t)
+    if not ok then return nil end
+    for k, v in pairs(props) do pcall(function() obj[k] = v end) end
+    return obj
+end
+
+-- ======================================================
+--   CONFIG TABLES
+-- ======================================================
+local AimbotCfg = {
+    Enabled = false, HitboxMode = "Head", FOVRadius = 120, Smooth = 0.1,
+    ShowFOV = true, VisibleCheck = false, TeamCheck = false,
+    FOVColor = Color3.fromRGB(255,255,255), KillAllEnabled = false,
+}
+local BoxCfg      = { Enabled=false, Color=Color3.fromRGB(255,50,50),   Thickness=1.5 }
+local LineCfg     = { Enabled=false, Mode="Bottom", Color=Color3.fromRGB(0,220,255),  Thickness=2 }
+local CountCfg    = { Enabled=false, Color=Color3.fromRGB(255,255,255) }
+local HealthCfg   = { Enabled=false, Color=Color3.fromRGB(50,255,100) }
+local NameCfg     = { Enabled=false, Color=Color3.fromRGB(255,255,255) }
+local DistanceCfg = { Enabled=false, Color=Color3.fromRGB(200,200,200) }
+local ChamsCfg    = { Enabled=false, Color=Color3.fromRGB(255,50,50) }
+local BoxTeamCfg  = { Enabled=false, Color=Color3.fromRGB(0,200,100),   Thickness=1.5 }
+local LineTeamCfg = { Enabled=false, Mode="Bottom", Color=Color3.fromRGB(0,150,255), Thickness=2 }
+
+local CamCfg    = { Enabled=false, Side="Kanan", OffsetX=4, OffsetY=1, Locked=false, POV=70, Distance=0, Height=0, NoShake=false }
+local PlayerCfg = { InfJump=false, SpeedEnabled=false, SpeedValue=16, NoclipEnabled=false, LowGravity=false, GravityValue=50 }
+local FunCfg    = { SpinBot=false, SpinSpeed=10, FakeLag=false, FakeLagDelay=1.5 }
+local SettingsCfg = { AntiAFK=false, AntiLag=false, XRay=false, FullBright=false }
+
+local OriginalFOV = Camera.FieldOfView
+local MaxDist     = 2000
+local ESPObjects  = {}
+
+-- ======================================================
+--   HELPERS
+-- ======================================================
+local function SameTeam(player)
+    local result = false
+    pcall(function()
+        if LocalPlayer.Team ~= nil then
+            result = (player.Team == LocalPlayer.Team)
+            return
+        end
+        local lChar = LocalPlayer.Character
+        local pChar = player.Character
+        if lChar and pChar then
+            local lTeam = lChar:GetAttribute("Team") or lChar:GetAttribute("TeamColor")
+            local pTeam = pChar:GetAttribute("Team") or pChar:GetAttribute("TeamColor")
+            if lTeam and pTeam then result = (lTeam == pTeam) end
+        end
+    end)
+    return result
+end
+
+local _ignoreCache    = {}
+local _ignoreCacheTick = 0
+local function GetIgnoreList()
+    if tick() - _ignoreCacheTick > 0.5 then
+        _ignoreCache = {}
+        for _, p in ipairs(Players:GetPlayers()) do
+            if p.Character then table.insert(_ignoreCache, p.Character) end
+        end
+        _ignoreCacheTick = tick()
+    end
+    return _ignoreCache
+end
+
+local function IsVisible(hrp)
+    local ignoreList = GetIgnoreList()
+    local origin = Camera.CFrame.Position
+    local dir    = hrp.Position - origin
+    local ray    = Ray.new(origin, dir.Unit * dir.Magnitude)
+    local hit    = workspace:FindPartOnRayWithIgnoreList(ray, ignoreList)
+    return hit == nil
+end
+
+local function HideAll(esp)
+    for k, obj in pairs(esp) do
+        if k == "_hl" then continue end
+        pcall(function()
+            if obj and obj.Visible ~= nil then obj.Visible = false end
+        end)
+    end
+end
+
+local function CleanupESP(player)
+    local t = ESPObjects[player]
+    if not t then return end
+    for k, obj in pairs(t) do
+        if k == "_hl" then
+            pcall(function() obj:Destroy() end)
+        elseif obj and type(obj) ~= "boolean" then
+            pcall(function() obj:Remove() end)
+        end
+    end
+    ESPObjects[player] = nil
+end
+
+local function BuildESP(player)
+    if player == LocalPlayer then return end
+    if ESPObjects[player] then CleanupESP(player) end
+    local hl = nil
+    pcall(function()
+        hl = Instance.new("Highlight")
+        hl.FillColor           = ChamsCfg.Color
+        hl.OutlineColor        = ChamsCfg.Color
+        hl.FillTransparency    = 0.5
+        hl.OutlineTransparency = 0
+        hl.Enabled             = false
+        hl.Parent              = workspace
+    end)
+    ESPObjects[player] = {
+        BoxTop    = D("Line", {Thickness=BoxCfg.Thickness,     Color=BoxCfg.Color,     Visible=false}),
+        BoxBottom = D("Line", {Thickness=BoxCfg.Thickness,     Color=BoxCfg.Color,     Visible=false}),
+        BoxLeft   = D("Line", {Thickness=BoxCfg.Thickness,     Color=BoxCfg.Color,     Visible=false}),
+        BoxRight  = D("Line", {Thickness=BoxCfg.Thickness,     Color=BoxCfg.Color,     Visible=false}),
+        BoxTeamTop    = D("Line", {Thickness=BoxTeamCfg.Thickness, Color=BoxTeamCfg.Color, Visible=false}),
+        BoxTeamBottom = D("Line", {Thickness=BoxTeamCfg.Thickness, Color=BoxTeamCfg.Color, Visible=false}),
+        BoxTeamLeft   = D("Line", {Thickness=BoxTeamCfg.Thickness, Color=BoxTeamCfg.Color, Visible=false}),
+        BoxTeamRight  = D("Line", {Thickness=BoxTeamCfg.Thickness, Color=BoxTeamCfg.Color, Visible=false}),
+        TracerLine     = D("Line", {Thickness=LineCfg.Thickness,     Color=LineCfg.Color,     Visible=false, Transparency=0.3}),
+        TracerLineTeam = D("Line", {Thickness=LineTeamCfg.Thickness, Color=LineTeamCfg.Color, Visible=false, Transparency=0.3}),
+        HealthText = D("Text", {Size=13, Color=HealthCfg.Color,   Outline=true, OutlineColor=Color3.fromRGB(0,0,0), Center=false, Visible=false}),
+        NameTag    = D("Text", {Size=13, Color=NameCfg.Color,     Outline=true, OutlineColor=Color3.fromRGB(0,0,0), Center=true,  Visible=false}),
+        DistTag    = D("Text", {Size=12, Color=DistanceCfg.Color, Outline=true, OutlineColor=Color3.fromRGB(0,0,0), Center=true,  Visible=false}),
+        _hl = hl,
+    }
+end
+
+-- Global Drawing untuk enemy count di tengah layar
+local GlobalCountTag = D("Text", {
+    Size         = 16,
+    Color        = CountCfg.Color,
+    Outline      = true,
+    OutlineColor = Color3.fromRGB(0, 0, 0),
+    Center       = true,
+    Visible      = false,
+})
+
+local FOVCircle = D("Circle", {Thickness=1.2, Color=AimbotCfg.FOVColor, Filled=false, Visible=false, NumSides=64, Radius=AimbotCfg.FOVRadius})
+
+-- ======================================================
+--   AIMBOT
+-- ======================================================
+local function GetTarget()
+    local vp     = Camera.ViewportSize
+    local center = Vector2.new(vp.X/2, vp.Y/2)
+    local best, bestDist = nil, math.huge
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player == LocalPlayer then continue end
+        if AimbotCfg.TeamCheck and SameTeam(player) then continue end
+        local char = player.Character
+        local hrp  = char and char:FindFirstChild("HumanoidRootPart")
+        local hum  = char and char:FindFirstChildOfClass("Humanoid")
+        if not hrp or not hum or hum.Health <= 0 then continue end
+        local toT = (hrp.Position - Camera.CFrame.Position).Unit
+        if toT:Dot(Camera.CFrame.LookVector) < 0.05 then continue end
+        if AimbotCfg.VisibleCheck and not IsVisible(hrp) then continue end
+        local pos3D, onScreen = Camera:WorldToViewportPoint(hrp.Position)
+        if not onScreen then continue end
+        local distPx = (Vector2.new(pos3D.X, pos3D.Y) - center).Magnitude
+        if distPx > AimbotCfg.FOVRadius then continue end
+        if distPx < bestDist then bestDist = distPx; best = player end
+    end
+    return best
+end
+
+local function DoAimbot()
+    if not AimbotCfg.Enabled then return end
+    local target = GetTarget()
+    if not target then return end
+    local char = target.Character
+    local hrp  = char and char:FindFirstChild("HumanoidRootPart")
+    local head = char and char:FindFirstChild("Head")
+    if not hrp then return end
+    local aimPos = AimbotCfg.HitboxMode == "Head"
+        and (head and head.Position or (hrp.Position + Vector3.new(0,1.5,0)))
+        or  (hrp.Position + Vector3.new(0,0.5,0))
+    local newCF = CFrame.new(Camera.CFrame.Position, aimPos)
+    Camera.CFrame = Camera.CFrame:Lerp(newCF, AimbotCfg.Smooth)
+end
+
+-- ======================================================
+--   KILL ALL
+-- ======================================================
+local kaCooldown = {}
+local KA_CD      = 5
+local kaLastRun  = 0
+
+local function KA_SetupPlayer(player)
+    player.CharacterAdded:Connect(function()    kaCooldown[player] = tick() end)
+    player.CharacterRemoving:Connect(function() kaCooldown[player] = tick() end)
+end
+for _, p in ipairs(Players:GetPlayers()) do
+    if p ~= LocalPlayer then KA_SetupPlayer(p) end
+end
+Players.PlayerAdded:Connect(function(p)    if p ~= LocalPlayer then KA_SetupPlayer(p) end end)
+Players.PlayerRemoving:Connect(function(p) kaCooldown[p] = nil end)
+
+local function DoKillAll()
+    if not AimbotCfg.KillAllEnabled then return end
+    local now = tick()
+    if now - kaLastRun < 0.05 then return end
+    kaLastRun = now
+    local localChar = LocalPlayer.Character
+    local localHRP  = localChar and localChar:FindFirstChild("HumanoidRootPart")
+    if not localHRP then return end
+    local targets = {}
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player == LocalPlayer then continue end
+        if AimbotCfg.TeamCheck and SameTeam(player) then continue end
+        local char = player.Character
+        local hrp  = char and char:FindFirstChild("HumanoidRootPart")
+        local hum  = char and char:FindFirstChildOfClass("Humanoid")
+        if not char or not hrp or not hum then continue end
+        if hum.Health <= 0 then continue end
+        local cd = kaCooldown[player] or 0
+        if now - cd < KA_CD then continue end
+        table.insert(targets, {player=player, hrp=hrp})
+    end
+    local count = #targets
+    if count == 0 then return end
+    for i, t in ipairs(targets) do
+        pcall(function()
+            local angle  = math.rad((360 / count) * (i - 1))
+            local radius = count == 1 and 0 or 1.8
+            local ox, oz = math.cos(angle)*radius, math.sin(angle)*radius
+            local targetCF = localHRP.CFrame * CFrame.new(ox, 0, -2 + oz)
+            t.hrp.CFrame = targetCF
+            t.hrp.AssemblyLinearVelocity  = Vector3.zero
+            t.hrp.AssemblyAngularVelocity = Vector3.zero
+        end)
+    end
+end
+
+-- ======================================================
+--   FAKE LAG
+-- ======================================================
+local flFrozen = {}
+local flTimer  = {}
+local function DoFakeLag()
+    if not FunCfg.FakeLag then flFrozen = {}; flTimer = {}; return end
+    local now = tick()
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player == LocalPlayer then continue end
+        local char = player.Character
+        local hrp  = char and char:FindFirstChild("HumanoidRootPart")
+        if not char or not hrp then flFrozen[player]=nil; flTimer[player]=nil; continue end
+        if not flFrozen[player] then
+            flFrozen[player] = hrp.CFrame
+            flTimer[player]  = now
+        else
+            local elapsed = now - (flTimer[player] or now)
+            if elapsed >= FunCfg.FakeLagDelay then
+                flFrozen[player] = nil; flTimer[player] = nil
+            else
+                pcall(function()
+                    hrp.CFrame = flFrozen[player]
+                    hrp.AssemblyLinearVelocity  = Vector3.zero
+                    hrp.AssemblyAngularVelocity = Vector3.zero
+                end)
+            end
+        end
+    end
+end
+
+-- ======================================================
+--   CHAMS
+-- ======================================================
+local function UpdateChams()
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player == LocalPlayer then continue end
+        local esp = ESPObjects[player]
+        if not esp or not esp._hl then continue end
+        local char = player.Character
+        pcall(function()
+            if ChamsCfg.Enabled and char then
+                esp._hl.Adornee      = char
+                esp._hl.FillColor    = ChamsCfg.Color
+                esp._hl.OutlineColor = ChamsCfg.Color
+                esp._hl.Enabled      = true
+            else
+                esp._hl.Enabled = false
+            end
+        end)
+    end
+end
+
+-- ======================================================
+--   CAMERA HACK
+-- ======================================================
+local lockedCF = nil
+local function UpdateCameraHack()
+    local char = LocalPlayer.Character
+    local hum  = char and char:FindFirstChildOfClass("Humanoid")
+    if not hum then return end
+    pcall(function() Camera.FieldOfView = CamCfg.Enabled and CamCfg.POV or OriginalFOV end)
+    if CamCfg.Enabled then
+        local sx = CamCfg.Side == "Kanan" and CamCfg.OffsetX or -CamCfg.OffsetX
+        pcall(function() hum.CameraOffset = Vector3.new(sx, CamCfg.OffsetY, 0) end)
+        if CamCfg.Locked and lockedCF then Camera.CFrame = lockedCF end
+    else
+        pcall(function() hum.CameraOffset = Vector3.new(0,0,0) end)
+    end
+end
+
+-- ======================================================
+--   SPIN BOT
+-- ======================================================
+local spinAngle = 0
+local function DoSpinBot()
+    if not FunCfg.SpinBot then return end
+    local char = LocalPlayer.Character
+    local hrp  = char and char:FindFirstChild("HumanoidRootPart")
+    if not hrp then return end
+    spinAngle = (spinAngle + FunCfg.SpinSpeed) % 360
+    local pos   = hrp.Position
+    local camCF = Camera.CFrame
+    hrp.CFrame  = CFrame.new(pos) * CFrame.Angles(0, math.rad(spinAngle), 0)
+    Camera.CFrame = camCF
+end
+
+-- ======================================================
+--   PLAYER MODS
+-- ======================================================
+UserInput.JumpRequest:Connect(function()
+    if not PlayerCfg.InfJump then return end
+    local char = LocalPlayer.Character
+    local hum  = char and char:FindFirstChildOfClass("Humanoid")
+    if hum then pcall(function() hum:ChangeState(Enum.HumanoidStateType.Jumping) end) end
+end)
+
+RunService.Heartbeat:Connect(function()
+    -- Kill All di Heartbeat (bukan RenderStepped)
+    DoKillAll()
+
+    if PlayerCfg.SpeedEnabled then
+        local char = LocalPlayer.Character
+        local hum  = char and char:FindFirstChildOfClass("Humanoid")
+        if hum then pcall(function() hum.WalkSpeed = PlayerCfg.SpeedValue end) end
+    end
+    if PlayerCfg.NoclipEnabled then
+        local char = LocalPlayer.Character
+        if char then
+            for _, p in ipairs(char:GetDescendants()) do
+                if p:IsA("BasePart") then pcall(function() p.CanCollide = false end) end
+            end
+        end
+    end
+    if PlayerCfg.LowGravity then
+        workspace.Gravity = PlayerCfg.GravityValue
+    end
+end)
+
+-- ======================================================
+--   ANTI AFK
+-- ======================================================
+local afkConn
+local function SetAntiAFK(v)
+    if v then
+        afkConn = RunService.Heartbeat:Connect(function()
+            local vu = game:GetService("VirtualUser")
+            if vu then pcall(function() vu:CaptureController(); vu:ClickButton2(Vector2.new()) end) end
+        end)
+    else
+        if afkConn then afkConn:Disconnect(); afkConn = nil end
+    end
+end
+
+local antiLagOriginal = {}
+local function SetAntiLag(v)
+    if v then
+        for _, obj in ipairs(workspace:GetDescendants()) do
+            if obj:IsA("ParticleEmitter") or obj:IsA("Smoke")
+            or obj:IsA("Sparkles")        or obj:IsA("Fire") then
+                antiLagOriginal[obj] = obj.Enabled
+                pcall(function() obj.Enabled = false end)
+            end
+        end
+    else
+        for obj, wasEnabled in pairs(antiLagOriginal) do
+            pcall(function() if obj and obj.Parent then obj.Enabled = wasEnabled end end)
+        end
+        antiLagOriginal = {}
+    end
+end
+
+local xrayOriginal = {}
+local function SetXRay(v)
+    if v then
+        for _, obj in ipairs(workspace:GetDescendants()) do
+            if obj:IsA("BasePart") then
+                local isChar = false
+                for _, p in ipairs(Players:GetPlayers()) do
+                    if p.Character and obj:IsDescendantOf(p.Character) then
+                        isChar = true; break
+                    end
+                end
+                if not isChar then
+                    xrayOriginal[obj] = {obj.Transparency, obj.CastShadow}
+                    pcall(function() obj.Transparency = 0.9; obj.CastShadow = false end)
+                end
+            end
+        end
+    else
+        for obj, props in pairs(xrayOriginal) do
+            pcall(function()
+                if obj and obj.Parent then
+                    obj.Transparency = props[1]
+                    obj.CastShadow   = props[2]
+                end
+            end)
+        end
+        xrayOriginal = {}
+    end
+end
+
+local origAmbient, origBrightness, origOutdoor
+local function SetFullBright(v)
+    if v then
+        if not origAmbient then
+            origAmbient    = Lighting.Ambient
+            origBrightness = Lighting.Brightness
+            origOutdoor    = Lighting.OutdoorAmbient
+        end
+        Lighting.Ambient        = Color3.fromRGB(255,255,255)
+        Lighting.Brightness     = 2
+        Lighting.OutdoorAmbient = Color3.fromRGB(255,255,255)
+    else
+        if origAmbient then
+            Lighting.Ambient        = origAmbient
+            Lighting.Brightness     = origBrightness
+            Lighting.OutdoorAmbient = origOutdoor
+            origAmbient = nil; origBrightness = nil; origOutdoor = nil
+        end
+    end
+end
+
+-- ======================================================
+--   UPDATE ESP
+-- ======================================================
+local espLastUpdate = 0
+local ESP_RATE      = 1/30
+
+local function UpdateESP()
+    local now = tick()
+    if now - espLastUpdate < ESP_RATE then return end
+    espLastUpdate = now
+
+    local vp = Camera.ViewportSize
+
+    -- FOV Circle
+    if FOVCircle then
+        pcall(function()
+            FOVCircle.Position = Vector2.new(vp.X/2, vp.Y/2)
+            FOVCircle.Radius   = AimbotCfg.FOVRadius
+            FOVCircle.Color    = AimbotCfg.FOVColor
+            FOVCircle.Visible  = AimbotCfg.Enabled and AimbotCfg.ShowFOV
+        end)
+    end
+
+    local enemyCount = 0
+
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player == LocalPlayer then continue end
+        local esp = ESPObjects[player]
+        if not esp then continue end
+
+        local char = player.Character
+        local hrp  = char and char:FindFirstChild("HumanoidRootPart")
+        local hum  = char and char:FindFirstChildOfClass("Humanoid")
+
+        local anyESP = BoxCfg.Enabled or LineCfg.Enabled or HealthCfg.Enabled
+                    or NameCfg.Enabled or DistanceCfg.Enabled or BoxTeamCfg.Enabled
+                    or LineTeamCfg.Enabled or CountCfg.Enabled
+
+        if not hrp or not hum or hum.Health <= 0 or not anyESP then
+            HideAll(esp); continue
+        end
+
+        local localChar = LocalPlayer.Character
+        local localHRP  = localChar and localChar:FindFirstChild("HumanoidRootPart")
+        local dist3D    = localHRP and math.floor((hrp.Position - localHRP.Position).Magnitude) or 0
+
+        if dist3D > MaxDist then HideAll(esp); continue end
+
+        local isTeam = SameTeam(player)
+        if not isTeam then enemyCount = enemyCount + 1 end
+
+        -- Hitung posisi layar
+        local topW = hrp.Position + Vector3.new(0, 3.2, 0)
+        local botW = hrp.Position - Vector3.new(0, 3.2, 0)
+        local top2D, topOnScreen = Camera:WorldToViewportPoint(topW)
+        local bot2D, botOnScreen = Camera:WorldToViewportPoint(botW)
+
+        if not topOnScreen and not botOnScreen then HideAll(esp); continue end
+
+        local sTop = Vector2.new(top2D.X, top2D.Y)
+        local sBot = Vector2.new(bot2D.X, bot2D.Y)
+        local bH   = math.abs(sBot.Y - sTop.Y)
+        local bW2  = bH * 0.5
+        local L    = sTop.X - bW2 / 2
+        local R    = sTop.X + bW2 / 2
+        local T    = sTop.Y
+        local B    = sBot.Y
+
+        -- ── ENEMY BOX ──
+        if BoxCfg.Enabled and not isTeam then
+            pcall(function()
+                local c, th = BoxCfg.Color, BoxCfg.Thickness
+                esp.BoxTop.From    = Vector2.new(L,T); esp.BoxTop.To    = Vector2.new(R,T)
+                esp.BoxBottom.From = Vector2.new(L,B); esp.BoxBottom.To = Vector2.new(R,B)
+                esp.BoxLeft.From   = Vector2.new(L,T); esp.BoxLeft.To   = Vector2.new(L,B)
+                esp.BoxRight.From  = Vector2.new(R,T); esp.BoxRight.To  = Vector2.new(R,B)
+                for _, s in ipairs({esp.BoxTop, esp.BoxBottom, esp.BoxLeft, esp.BoxRight}) do
+                    s.Color = c; s.Thickness = th; s.Visible = true
+                end
+            end)
+        else
+            pcall(function()
+                esp.BoxTop.Visible=false; esp.BoxBottom.Visible=false
+                esp.BoxLeft.Visible=false; esp.BoxRight.Visible=false
+            end)
+        end
+
+        -- ── TEAM BOX ──
+        if BoxTeamCfg.Enabled and isTeam then
+            pcall(function()
+                local c, th = BoxTeamCfg.Color, BoxTeamCfg.Thickness
+                esp.BoxTeamTop.From    = Vector2.new(L,T); esp.BoxTeamTop.To    = Vector2.new(R,T)
+                esp.BoxTeamBottom.From = Vector2.new(L,B); esp.BoxTeamBottom.To = Vector2.new(R,B)
+                esp.BoxTeamLeft.From   = Vector2.new(L,T); esp.BoxTeamLeft.To   = Vector2.new(L,B)
+                esp.BoxTeamRight.From  = Vector2.new(R,T); esp.BoxTeamRight.To  = Vector2.new(R,B)
+                for _, s in ipairs({esp.BoxTeamTop, esp.BoxTeamBottom, esp.BoxTeamLeft, esp.BoxTeamRight}) do
+                    s.Color = c; s.Thickness = th; s.Visible = true
+                end
+            end)
+        else
+            pcall(function()
+                esp.BoxTeamTop.Visible=false; esp.BoxTeamBottom.Visible=false
+                esp.BoxTeamLeft.Visible=false; esp.BoxTeamRight.Visible=false
+            end)
+        end
+
+        -- ── ENEMY TRACER LINE ──
+        if LineCfg.Enabled and not isTeam then
+            pcall(function()
+                local fromY = LineCfg.Mode=="Top" and 0 or LineCfg.Mode=="Middle" and vp.Y/2 or vp.Y
+                esp.TracerLine.From      = Vector2.new(vp.X/2, fromY)
+                esp.TracerLine.To        = Vector2.new(sTop.X, T)
+                esp.TracerLine.Color     = LineCfg.Color
+                esp.TracerLine.Thickness = LineCfg.Thickness
+                esp.TracerLine.Visible   = true
+            end)
+        else
+            pcall(function() esp.TracerLine.Visible = false end)
+        end
+
+        -- ── TEAM TRACER LINE ──
+        if LineTeamCfg.Enabled and isTeam then
+            pcall(function()
+                local fromY = LineTeamCfg.Mode=="Top" and 0 or LineTeamCfg.Mode=="Middle" and vp.Y/2 or vp.Y
+                esp.TracerLineTeam.From      = Vector2.new(vp.X/2, fromY)
+                esp.TracerLineTeam.To        = Vector2.new(sTop.X, T)
+                esp.TracerLineTeam.Color     = LineTeamCfg.Color
+                esp.TracerLineTeam.Thickness = LineTeamCfg.Thickness
+                esp.TracerLineTeam.Visible   = true
+            end)
+        else
+            pcall(function() esp.TracerLineTeam.Visible = false end)
+        end
+
+        -- ── HEALTH TEXT ──
+        if HealthCfg.Enabled then
+            pcall(function()
+                esp.HealthText.Text     = "HP " .. math.floor(hum.Health)
+                esp.HealthText.Color    = HealthCfg.Color
+                esp.HealthText.Position = Vector2.new(R + 5, T)
+                esp.HealthText.Visible  = true
+            end)
+        else
+            pcall(function() esp.HealthText.Visible = false end)
+        end
+
+        -- ── NAME TAG ──
+        if NameCfg.Enabled then
+            pcall(function()
+                esp.NameTag.Text     = player.Name
+                esp.NameTag.Color    = NameCfg.Color
+                esp.NameTag.Position = Vector2.new(sTop.X, T - 16)
+                esp.NameTag.Visible  = true
+            end)
+        else
+            pcall(function() esp.NameTag.Visible = false end)
+        end
+
+        -- ── DISTANCE TAG ──
+        if DistanceCfg.Enabled then
+            pcall(function()
+                local nameOff = NameCfg.Enabled and 14 or 0
+                esp.DistTag.Text     = dist3D .. "m"
+                esp.DistTag.Color    = DistanceCfg.Color
+                esp.DistTag.Position = Vector2.new(sTop.X, T - 16 - nameOff)
+                esp.DistTag.Visible  = true
+            end)
+        else
+            pcall(function() esp.DistTag.Visible = false end)
+        end
+    end
+
+    -- ── ENEMY COUNT DI TENGAH ATAS LAYAR ──
+    if GlobalCountTag then
+        if CountCfg.Enabled then
+            pcall(function()
+                GlobalCountTag.Text     = "ENEMY : " .. enemyCount
+                GlobalCountTag.Color    = CountCfg.Color
+                GlobalCountTag.Position = Vector2.new(vp.X / 2, 10)
+                GlobalCountTag.Visible  = true
+            end)
+        else
+            pcall(function() GlobalCountTag.Visible = false end)
+        end
+    end
+end
+
+-- ======================================================
+--   ESP PLAYER EVENTS
+-- ======================================================
+local function OnPlayerAdded(player)
+    BuildESP(player)
+    player.CharacterAdded:Connect(function()
+        task.wait(0.5)
+        BuildESP(player)
+    end)
+    player.CharacterRemoving:Connect(function()
+        if ESPObjects[player] then HideAll(ESPObjects[player]) end
+    end)
+end
+
+Players.PlayerAdded:Connect(OnPlayerAdded)
+Players.PlayerRemoving:Connect(function(player) CleanupESP(player) end)
+for _, p in ipairs(Players:GetPlayers()) do OnPlayerAdded(p) end
+LocalPlayer.CharacterAdded:Connect(function()
+    task.wait(1)
+    for _, p in ipairs(Players:GetPlayers()) do
+        if p ~= LocalPlayer then BuildESP(p) end
+    end
+end)
+
+-- RenderStepped hanya untuk visual
+RunService.RenderStepped:Connect(function()
+    UpdateESP()
+    UpdateChams()
+    DoAimbot()
+    UpdateCameraHack()
+    DoSpinBot()
+    DoFakeLag()
+end)
+
+-- ======================================================
+--   UI PAGES
+-- ======================================================
+Window:Category("Main")
+
+local AimbotPage = Window:Page({Name = "Aimbot", Icon = "138827881557940"})
+
+local AimbotSection1 = AimbotPage:Section({Name = "Basic", Side = 1})
+local AimbotTgl = AimbotSection1:Toggle({Name="Enable Aimbot", Flag="AimbotEnabled", Default=false, Callback=function(v) AimbotCfg.Enabled=v end})
+AimbotTgl:SubKeybind({Flag="AimbotKey", Default=Enum.KeyCode.CapsLock, Mode="Hold"})
+AimbotTgl:SubColorpicker({Flag="FOVColor", Default=Color3.fromRGB(255,255,255), Callback=function(v)
+    AimbotCfg.FOVColor=v
+    if FOVCircle then pcall(function() FOVCircle.Color=v end) end
+end})
+AimbotSection1:Dropdown({Name="Select Hitbox", Flag="AimbotHitbox", Default={"Head"}, Items={"Head","Body"}, Multi=false, Callback=function(v)
+    AimbotCfg.HitboxMode = type(v)=="table" and (v[1] or "Head") or v
+end})
+AimbotSection1:Toggle({Name="Show FOV Circle", Flag="ShowFOV", Default=true, Callback=function(v) AimbotCfg.ShowFOV=v end})
+
+local AimbotSection2 = AimbotPage:Section({Name = "Checks", Side = 2})
+AimbotSection2:Toggle({Name="Visible Check", Flag="VisCheck",  Default=false, Callback=function(v) AimbotCfg.VisibleCheck=v end})
+AimbotSection2:Toggle({Name="Team Check",    Flag="TeamCheck", Default=false, Callback=function(v) AimbotCfg.TeamCheck=v end})
+
+local AimbotSection3 = AimbotPage:Section({Name = "Advanced", Side = 1})
+AimbotSection3:Slider({Name="FOV",    Flag="AimbotFOV",    Min=10, Max=300, Default=30, Suffix=" / 300", Callback=function(v) AimbotCfg.FOVRadius = math.floor((v/300)*500)+10 end})
+AimbotSection3:Slider({Name="Smooth", Flag="AimbotSmooth", Min=1,  Max=10,  Default=1,  Suffix=" / 10",  Callback=function(v) AimbotCfg.Smooth=v/10 end})
+
+local KillSection = AimbotPage:Section({Name = "Assault", Side = 2})
+KillSection:Toggle({Name="Bring All", Flag="KillAll", Default=false, Callback=function(v) AimbotCfg.KillAllEnabled=v end})
+
+-- VISUAL PAGE
+local VisualPage = Window:Page({Name = "Visual", Icon = "138827881557940"})
+
+local ESPSec1 = VisualPage:Section({Name = "ESP Enemy", Side = 1})
+local BoxTgl = ESPSec1:Toggle({Name="ESP Box", Flag="EspBox", Default=false, Callback=function(v) BoxCfg.Enabled=v end})
+BoxTgl:SubColorpicker({Flag="BoxColor", Default=Color3.fromRGB(255,255,255), Callback=function(v) BoxCfg.Color=v end})
+local LineTgl = ESPSec1:Toggle({Name="ESP Line", Flag="EspLine", Default=false, Callback=function(v) LineCfg.Enabled=v end})
+LineTgl:SubColorpicker({Flag="LineColor", Default=Color3.fromRGB(0,220,255), Callback=function(v) LineCfg.Color=v end})
+ESPSec1:Dropdown({Name="Line Mode", Flag="LineMode", Default={"Bottom"}, Items={"Top","Middle","Bottom"}, Multi=false, Callback=function(v)
+    LineCfg.Mode = type(v)=="table" and (v[1] or "Bottom") or v
+end})
+local HealthTgl = ESPSec1:Toggle({Name="ESP Health", Flag="EspHealth", Default=false, Callback=function(v) HealthCfg.Enabled=v end})
+HealthTgl:SubColorpicker({Flag="HealthColor", Default=Color3.fromRGB(50,255,100), Callback=function(v) HealthCfg.Color=v end})
+local NameTgl = ESPSec1:Toggle({Name="ESP Names", Flag="EspNames", Default=false, Callback=function(v) NameCfg.Enabled=v end})
+NameTgl:SubColorpicker({Flag="NameColor", Default=Color3.fromRGB(255,255,255), Callback=function(v) NameCfg.Color=v end})
+local DistTgl = ESPSec1:Toggle({Name="ESP Distance", Flag="EspDist", Default=false, Callback=function(v) DistanceCfg.Enabled=v end})
+DistTgl:SubColorpicker({Flag="DistColor", Default=Color3.fromRGB(200,200,200), Callback=function(v) DistanceCfg.Color=v end})
+
+-- ESP Count (global, tengah layar)
+local CountTgl = ESPSec1:Toggle({
+    Name    = "ESP Count",
+    Flag    = "EspCount",
+    Default = false,
+    Callback = function(v)
+        CountCfg.Enabled = v
+        if not v and GlobalCountTag then
+            pcall(function() GlobalCountTag.Visible = false end)
+        end
+    end
+})
+CountTgl:SubColorpicker({
+    Flag    = "CountColor",
+    Default = Color3.fromRGB(255,255,255),
+    Callback = function(v)
+        CountCfg.Color = v
+        if GlobalCountTag then pcall(function() GlobalCountTag.Color = v end) end
+    end
+})
+
+local ESPSec2 = VisualPage:Section({Name = "ESP Team", Side = 2})
+local BoxTeamTgl = ESPSec2:Toggle({Name="ESP Box Team", Flag="EspBoxTeam", Default=false, Callback=function(v) BoxTeamCfg.Enabled=v end})
+BoxTeamTgl:SubColorpicker({Flag="BoxTeamColor", Default=Color3.fromRGB(0,200,100), Callback=function(v) BoxTeamCfg.Color=v end})
+local LineTeamTgl = ESPSec2:Toggle({Name="ESP Line Team", Flag="EspLineTeam", Default=false, Callback=function(v) LineTeamCfg.Enabled=v end})
+LineTeamTgl:SubColorpicker({Flag="LineTeamColor", Default=Color3.fromRGB(0,150,255), Callback=function(v) LineTeamCfg.Color=v end})
+ESPSec2:Dropdown({Name="Team Line Mode", Flag="LineTeamMode", Default={"Bottom"}, Items={"Top","Middle","Bottom"}, Multi=false, Callback=function(v)
+    LineTeamCfg.Mode = type(v)=="table" and (v[1] or "Bottom") or v
+end})
+
+-- CAMERA PAGE
+local CameraPage = Window:Page({Name = "Camera", Icon = "138827881557940"})
+
+local CamSec1 = CameraPage:Section({Name = "Position", Side = 1})
+CamSec1:Toggle({Name="Enable Camera Hack", Flag="CamEnabled", Default=false, Callback=function(v)
+    CamCfg.Enabled=v
+    if not v then
+        local char = LocalPlayer.Character
+        local hum  = char and char:FindFirstChildOfClass("Humanoid")
+        if hum then pcall(function() hum.CameraOffset=Vector3.new(0,0,0) end) end
+        pcall(function() Camera.FieldOfView=OriginalFOV end)
+    end
+end})
+CamSec1:Dropdown({Name="Camera Side", Flag="CamSide", Default={"Kanan"}, Items={"Kiri","Kanan"}, Multi=false, Callback=function(v)
+    CamCfg.Side = type(v)=="table" and (v[1] or "Kanan") or v
+end})
+CamSec1:Slider({Name="Offset X", Flag="CamX", Min=0,   Max=20, Default=4, Suffix=" studs", Callback=function(v) CamCfg.OffsetX=v end})
+CamSec1:Slider({Name="Offset Y", Flag="CamY", Min=-30, Max=30, Default=1, Suffix=" studs", Callback=function(v) CamCfg.OffsetY=v end})
+
+local CamSec2 = CameraPage:Section({Name = "View", Side = 2})
+CamSec2:Slider({Name="FOV",      Flag="CamPOV",    Min=30,  Max=120, Default=70, Suffix=" fov",   Callback=function(v) CamCfg.POV=v end})
+CamSec2:Slider({Name="Distance", Flag="CamDist",   Min=0,   Max=50,  Default=0,  Suffix=" studs", Callback=function(v) CamCfg.Distance=v end})
+CamSec2:Slider({Name="Height",   Flag="CamHeight", Min=-50, Max=50,  Default=0,  Suffix=" studs", Callback=function(v) CamCfg.Height=v end})
+
+local CamSec3 = CameraPage:Section({Name = "Misc", Side = 1})
+CamSec3:Toggle({Name="Camera Lock", Flag="CamLock", Default=false, Callback=function(v) CamCfg.Locked=v; if v then lockedCF=Camera.CFrame end end})
+CamSec3:Toggle({Name="No Shake",    Flag="NoShake", Default=false, Callback=function(v) CamCfg.NoShake=v end})
+CamSec3:Button({Name="Reset Camera", Callback=function()
+    CamCfg.Enabled=false; CamCfg.OffsetX=4; CamCfg.OffsetY=1; CamCfg.POV=70; CamCfg.Distance=0; CamCfg.Height=0
+    local char = LocalPlayer.Character
+    local hum  = char and char:FindFirstChildOfClass("Humanoid")
+    if hum then pcall(function() hum.CameraOffset=Vector3.new(0,0,0) end) end
+    pcall(function() Camera.FieldOfView=OriginalFOV end)
+end})
+
+-- PLAYERS PAGE
+local PlayersPage = Window:Page({Name = "Players", Icon = "138827881557940"})
+local PlrSec = PlayersPage:Section({Name = "Player Mods", Side = 1})
+PlrSec:Toggle({Name="Infinite Jump", Flag="InfJump", Default=false, Callback=function(v) PlayerCfg.InfJump=v end})
+PlrSec:Toggle({Name="Speed Hack", Flag="SpeedEnabled", Default=false, Callback=function(v)
+    PlayerCfg.SpeedEnabled=v
+    if not v then
+        local char = LocalPlayer.Character
+        local hum  = char and char:FindFirstChildOfClass("Humanoid")
+        if hum then pcall(function() hum.WalkSpeed=16 end) end
+    end
+end})
+PlrSec:Slider({Name="Speed Value", Flag="SpeedVal",   Min=16,  Max=300, Default=16,  Suffix=" studs/s", Callback=function(v) PlayerCfg.SpeedValue=v end})
+PlrSec:Toggle({Name="Noclip",      Flag="Noclip",      Default=false, Callback=function(v) PlayerCfg.NoclipEnabled=v end})
+PlrSec:Toggle({Name="Low Gravity", Flag="LowGravity",  Default=false, Callback=function(v)
+    PlayerCfg.LowGravity=v
+    if not v then workspace.Gravity=196 end
+end})
+PlrSec:Slider({Name="Gravity Value", Flag="GravityVal", Min=5, Max=196, Default=50, Suffix=" g", Callback=function(v) PlayerCfg.GravityValue=v end})
+
+-- FUN PAGE
+local FunPage = Window:Page({Name = "Fun", Icon = "138827881557940"})
+local FunSec  = FunPage:Section({Name = "Fun Mods",  Side = 1})
+FunSec:Toggle({Name="Spin Bot",   Flag="SpinBot",   Default=false, Callback=function(v) FunCfg.SpinBot=v; if not v then spinAngle=0 end end})
+FunSec:Slider({Name="Spin Speed", Flag="SpinSpeed", Min=1, Max=50, Default=10, Suffix=" deg/frame", Callback=function(v) FunCfg.SpinSpeed=v end})
+local FakeLagSec = FunPage:Section({Name = "Fake Lag", Side = 2})
+FakeLagSec:Toggle({Name="Fake Lag", Flag="FakeLag", Default=false, Callback=function(v) FunCfg.FakeLag=v; flFrozen={}; flTimer={} end})
+FakeLagSec:Slider({Name="Delay", Flag="FakeLagDelay", Min=5, Max=50, Default=15, Suffix="×0.1s", Callback=function(v) FunCfg.FakeLagDelay=v/10 end})
+
+-- SETTINGS PAGE
+Window:Category("Settings")
+local SettingsPage = Library:CreateSettingsPage(Window, KeybindList)
+local SettingsSec  = Window:Page({Name="Extra Settings", Icon="138827881557940"})
+local SetSec       = SettingsSec:Section({Name="Misc Settings", Side=1})
+SetSec:Toggle({Name="Anti AFK ",    Flag="AntiAFK",    Default=false, Callback=function(v) SettingsCfg.AntiAFK=v;    SetAntiAFK(v) end})
+SetSec:Toggle({Name="Anti Lag",    Flag="AntiLag",    Default=false, Callback=function(v) SettingsCfg.AntiLag=v;    SetAntiLag(v) end})
+SetSec:Toggle({Name="X-Ray",       Flag="XRay",       Default=false, Callback=function(v) SettingsCfg.XRay=v;       SetXRay(v) end})
+SetSec:Toggle({Name="Full Bright", Flag="FullBright", Default=false, Callback=function(v) SettingsCfg.FullBright=v; SetFullBright(v) end})
+
+-- ======================================================
+--   INIT
+-- ======================================================
+local SilentLoadEnabled = false
+pcall(function()
+    local path = Library.Folders.Configs .. "/silentload.txt"
+    if isfile and isfile(path) and readfile then
+        local ok, content = pcall(readfile, path)
+        if ok and content == "true" then SilentLoadEnabled = true end
+    end
+end)
+
+Window:Init()
+
+if SilentLoadEnabled and type(Window.SetOpen) == "function" then
+    Window:SetOpen(false)
+end
+
+Library:Notification({
+    Title       = "XraxorHub",
+    Description = "Script Has Been Successfully Loaded!",
+    Duration    = 5,
+    Icon        = "85279746515974"
+})
+        -- Taruh main script disini
+    else
+        statusIcon.Text = "X"
+        statusIcon.TextColor3 = Color3.fromRGB(220, 70, 70)
+        statusMsg.Text = "Invalid key! Please try again."
+        statusMsg.TextColor3 = Color3.fromRGB(220, 70, 70)
+        TweenService:Create(inputSection, TweenInfo.new(0.05), {Position = UDim2.new(0.01, 0, 0, 56)}):Play()
+        task.wait(0.05)
+        TweenService:Create(inputSection, TweenInfo.new(0.05), {Position = UDim2.new(0, -4, 0, 56)}):Play()
+        task.wait(0.05)
+        TweenService:Create(inputSection, TweenInfo.new(0.05), {Position = UDim2.new(0, 0, 0, 56)}):Play()
+        task.wait(2.5)
+        statusIcon.Text = "!"
+        statusIcon.TextColor3 = Color3.fromRGB(220, 180, 60)
+        statusMsg.Text = "Enter your key to unlock XraxorHub"
+        statusMsg.TextColor3 = Color3.fromRGB(170, 170, 190)
+    end
+end)
+
+local cardData = {
+    {icon = "✦", title = " Secure Access", desc = "Encrypted key system"},
+    {icon = "ϟ", title = "Fast Get Key",   desc = "Instant access"},
+    {icon = "↻", title = "Updated",        desc = "Always Update"},
+}
+
+for i, card in ipairs(cardData) do
+    local cardFrame = Instance.new("Frame")
+    cardFrame.Size = UDim2.new(0.31, 0, 0, 64)
+    cardFrame.Position = UDim2.new((i-1)*0.345, 0, 0, 182)
+    cardFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 18)
+    cardFrame.BorderSizePixel = 0
+    cardFrame.ZIndex = 5
+    cardFrame.Parent = keyPanel
+    Instance.new("UICorner", cardFrame).CornerRadius = UDim.new(0, 10)
+    local cStroke = Instance.new("UIStroke", cardFrame)
+    cStroke.Color = Color3.fromRGB(35, 35, 45)
+    cStroke.Thickness = 1
+
+    local cIcon = Instance.new("TextLabel")
+    cIcon.Size = UDim2.new(1, 0, 0, 28)
+    cIcon.Position = UDim2.new(0, 0, 0, 8)
+    cIcon.BackgroundTransparency = 1
+    cIcon.Text = card.icon
+    cIcon.TextColor3 = Color3.fromRGB(200, 200, 220)
+    cIcon.TextSize = 14
+    cIcon.Font = Enum.Font.GothamBold
+    cIcon.ZIndex = 6
+    cIcon.Parent = cardFrame
+
+    local cTitle = Instance.new("TextLabel")
+    cTitle.Size = UDim2.new(1, 0, 0, 16)
+    cTitle.Position = UDim2.new(0, 0, 0, 34)
+    cTitle.BackgroundTransparency = 1
+    cTitle.Text = card.title
+    cTitle.TextColor3 = Color3.fromRGB(210, 210, 225)
+    cTitle.TextSize = 11
+    cTitle.Font = Enum.Font.GothamBold
+    cTitle.ZIndex = 6
+    cTitle.Parent = cardFrame
+
+    local cDesc = Instance.new("TextLabel")
+    cDesc.Size = UDim2.new(1, -10, 0, 14)
+    cDesc.Position = UDim2.new(0, 5, 0, 48)
+    cDesc.BackgroundTransparency = 1
+    cDesc.Text = card.desc
+    cDesc.TextColor3 = Color3.fromRGB(90, 90, 110)
+    cDesc.TextSize = 9
+    cDesc.Font = Enum.Font.Gotham
+    cDesc.ZIndex = 6
+    cDesc.Parent = cardFrame
+end
+
+-- =============================================
+-- CHANGELOG PANEL DENGAN SCROLLINGFRAME
+-- =============================================
+local changelogPanel = Instance.new("Frame")
+changelogPanel.Size = UDim2.new(1, -30, 1, -72)
+changelogPanel.Position = UDim2.new(0, 15, 0, 62)
+changelogPanel.BackgroundTransparency = 1
+changelogPanel.ZIndex = 4
+changelogPanel.Visible = false
+changelogPanel.Parent = contentArea
+
+local clHeader = Instance.new("TextLabel")
+clHeader.Size = UDim2.new(1, 0, 0, 32)
+clHeader.BackgroundTransparency = 1
+clHeader.Text = "Changelog"
+clHeader.TextColor3 = Color3.fromRGB(220, 220, 235)
+clHeader.TextSize = 16
+clHeader.Font = Enum.Font.GothamBold
+clHeader.TextXAlignment = Enum.TextXAlignment.Left
+clHeader.ZIndex = 5
+clHeader.Parent = changelogPanel
+
+local clDivider = Instance.new("Frame")
+clDivider.Size = UDim2.new(1, 0, 0, 1)
+clDivider.Position = UDim2.new(0, 0, 0, 36)
+clDivider.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
+clDivider.BorderSizePixel = 0
+clDivider.ZIndex = 5
+clDivider.Parent = changelogPanel
+
+-- ScrollingFrame Changelog
+local clScroll = Instance.new("ScrollingFrame")
+clScroll.Size = UDim2.new(1, 0, 1, -44)
+clScroll.Position = UDim2.new(0, 0, 0, 44)
+clScroll.BackgroundTransparency = 1
+clScroll.BorderSizePixel = 0
+clScroll.ScrollBarThickness = 4
+clScroll.ScrollBarImageColor3 = Color3.fromRGB(60, 60, 80)
+clScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+clScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+clScroll.ZIndex = 5
+clScroll.Parent = changelogPanel
+
+local clListLayout = Instance.new("UIListLayout")
+clListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+clListLayout.Padding = UDim.new(0, 10)
+clListLayout.Parent = clScroll
+
+local clPadding = Instance.new("UIPadding")
+clPadding.PaddingBottom = UDim.new(0, 10)
+clPadding.Parent = clScroll
+
+-- Data changelog
+local changelogData = {
+    {
+        version = "[ AIMBOT UNIVERSAL ]",
+        badge = "V1.0 NEW",
+        date = "20/7/2026",
+        changes = {
+            "Add Extra Sensory Perception Complete",
+            "Aimbot",
+            "Add Camera Hack And Spinbot [ Limited Game Support ]",
+            "UI Library Peak",
+        }
+    },
+}
+
+for _, entry in ipairs(changelogData) do
+    local clCard = Instance.new("Frame")
+    clCard.Size = UDim2.new(1, -8, 0, 50 + (#entry.changes * 22))
+    clCard.BackgroundColor3 = Color3.fromRGB(15, 15, 18)
+    clCard.BorderSizePixel = 0
+    clCard.LayoutOrder = 1
+    clCard.ZIndex = 6
+    clCard.Parent = clScroll
+    Instance.new("UICorner", clCard).CornerRadius = UDim.new(0, 10)
+    local clCardStroke = Instance.new("UIStroke", clCard)
+    clCardStroke.Color = Color3.fromRGB(35, 35, 45)
+    clCardStroke.Thickness = 1
+
+    local clVer = Instance.new("TextLabel")
+    clVer.Size = UDim2.new(0.55, 0, 0, 28)
+    clVer.Position = UDim2.new(0, 14, 0, 8)
+    clVer.BackgroundTransparency = 1
+    clVer.Text = entry.version
+    clVer.TextColor3 = Color3.fromRGB(230, 230, 245)
+    clVer.TextSize = 13
+    clVer.Font = Enum.Font.GothamBold
+    clVer.TextXAlignment = Enum.TextXAlignment.Left
+    clVer.ZIndex = 7
+    clVer.Parent = clCard
+
+    local clBadge = Instance.new("Frame")
+    clBadge.Size = UDim2.new(0, 60, 0, 18)
+    clBadge.Position = UDim2.new(0, 175, 0, 12)
+    clBadge.BackgroundColor3 = Color3.fromRGB(20, 40, 28)
+    clBadge.BorderSizePixel = 0
+    clBadge.ZIndex = 7
+    clBadge.Parent = clCard
+    Instance.new("UICorner", clBadge).CornerRadius = UDim.new(0, 9)
+    local clBS = Instance.new("UIStroke", clBadge)
+    clBS.Color = Color3.fromRGB(80, 220, 140)
+    clBS.Thickness = 1
+    clBS.Transparency = 0.3
+    local clBT = Instance.new("TextLabel")
+    clBT.Size = UDim2.new(1, 0, 1, 0)
+    clBT.BackgroundTransparency = 1
+    clBT.Text = entry.badge
+    clBT.TextColor3 = Color3.fromRGB(80, 220, 140)
+    clBT.TextSize = 9
+    clBT.Font = Enum.Font.GothamBold
+    clBT.ZIndex = 8
+    clBT.Parent = clBadge
+
+    local clDate = Instance.new("TextLabel")
+    clDate.Size = UDim2.new(0, 90, 0, 28)
+    clDate.Position = UDim2.new(1, -100, 0, 8)
+    clDate.BackgroundTransparency = 1
+    clDate.Text = entry.date
+    clDate.TextColor3 = Color3.fromRGB(80, 80, 100)
+    clDate.TextSize = 10
+    clDate.Font = Enum.Font.Gotham
+    clDate.TextXAlignment = Enum.TextXAlignment.Right
+    clDate.ZIndex = 7
+    clDate.Parent = clCard
+
+    local clHDiv = Instance.new("Frame")
+    clHDiv.Size = UDim2.new(1, -28, 0, 1)
+    clHDiv.Position = UDim2.new(0, 14, 0, 38)
+    clHDiv.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
+    clHDiv.BorderSizePixel = 0
+    clHDiv.ZIndex = 7
+    clHDiv.Parent = clCard
+
+    for j, ch in ipairs(entry.changes) do
+        local lbl = Instance.new("TextLabel")
+        lbl.Size = UDim2.new(1, -28, 0, 20)
+        lbl.Position = UDim2.new(0, 14, 0, 42 + (j-1)*22)
+        lbl.BackgroundTransparency = 1
+        lbl.Text = "• " .. ch
+        lbl.TextColor3 = Color3.fromRGB(160, 160, 180)
+        lbl.TextSize = 11
+        lbl.Font = Enum.Font.Gotham
+        lbl.TextXAlignment = Enum.TextXAlignment.Left
+        lbl.ZIndex = 7
+        lbl.Parent = clCard
+    end
+end
+
+-- =============================================
+-- ABOUT PANEL DENGAN SCROLLINGFRAME
+-- =============================================
+local aboutPanel = Instance.new("Frame")
+aboutPanel.Size = UDim2.new(1, -30, 1, -72)
+aboutPanel.Position = UDim2.new(0, 15, 0, 62)
+aboutPanel.BackgroundTransparency = 1
+aboutPanel.ZIndex = 4
+aboutPanel.Visible = false
+aboutPanel.Parent = contentArea
+
+local abHeader = Instance.new("TextLabel")
+abHeader.Size = UDim2.new(1, 0, 0, 32)
+abHeader.BackgroundTransparency = 1
+abHeader.Text = "About"
+abHeader.TextColor3 = Color3.fromRGB(220, 220, 235)
+abHeader.TextSize = 16
+abHeader.Font = Enum.Font.GothamBold
+abHeader.TextXAlignment = Enum.TextXAlignment.Left
+abHeader.ZIndex = 5
+abHeader.Parent = aboutPanel
+
+local abDivider = Instance.new("Frame")
+abDivider.Size = UDim2.new(1, 0, 0, 1)
+abDivider.Position = UDim2.new(0, 0, 0, 36)
+abDivider.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
+abDivider.BorderSizePixel = 0
+abDivider.ZIndex = 5
+abDivider.Parent = aboutPanel
+
+-- ScrollingFrame About
+local abScroll = Instance.new("ScrollingFrame")
+abScroll.Size = UDim2.new(1, 0, 1, -44)
+abScroll.Position = UDim2.new(0, 0, 0, 44)
+abScroll.BackgroundTransparency = 1
+abScroll.BorderSizePixel = 0
+abScroll.ScrollBarThickness = 4
+abScroll.ScrollBarImageColor3 = Color3.fromRGB(60, 60, 80)
+abScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+abScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+abScroll.ZIndex = 5
+abScroll.Parent = aboutPanel
+
+local abListLayout = Instance.new("UIListLayout")
+abListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+abListLayout.Padding = UDim.new(0, 10)
+abListLayout.Parent = abScroll
+
+local abPadding = Instance.new("UIPadding")
+abPadding.PaddingBottom = UDim.new(0, 10)
+abPadding.Parent = abScroll
+
+-- Card besar About
+local abBigCard = Instance.new("Frame")
+abBigCard.Size = UDim2.new(1, -8, 0, 100)
+abBigCard.BackgroundColor3 = Color3.fromRGB(15, 15, 18)
+abBigCard.BorderSizePixel = 0
+abBigCard.LayoutOrder = 1
+abBigCard.ZIndex = 6
+abBigCard.Parent = abScroll
+Instance.new("UICorner", abBigCard).CornerRadius = UDim.new(0, 10)
+local abBS = Instance.new("UIStroke", abBigCard)
+abBS.Color = Color3.fromRGB(35, 35, 45)
+abBS.Thickness = 1
+
+local abLogo = Instance.new("TextLabel")
+abLogo.Size = UDim2.new(0, 50, 0, 50)
+abLogo.Position = UDim2.new(0, 24, 0.5, -25)
+abLogo.BackgroundColor3 = Color3.fromRGB(220, 220, 255)
+abLogo.Text = "X"
+abLogo.TextSize = 26
+abLogo.TextColor3 = Color3.fromRGB(10, 10, 12)
+abLogo.Font = Enum.Font.GothamBold
+abLogo.BorderSizePixel = 0
+abLogo.ZIndex = 7
+abLogo.Parent = abBigCard
+Instance.new("UICorner", abLogo).CornerRadius = UDim.new(0, 10)
+
+local abName = Instance.new("TextLabel")
+abName.Size = UDim2.new(0.6, 0, 0, 28)
+abName.Position = UDim2.new(0, 90, 0, 22)
+abName.BackgroundTransparency = 1
+abName.Text = "XraxorHub"
+abName.TextColor3 = Color3.fromRGB(240, 240, 255)
+abName.TextSize = 20
+abName.Font = Enum.Font.GothamBold
+abName.TextXAlignment = Enum.TextXAlignment.Left
+abName.ZIndex = 7
+abName.Parent = abBigCard
+
+local abVer = Instance.new("TextLabel")
+abVer.Size = UDim2.new(0.6, 0, 0, 18)
+abVer.Position = UDim2.new(0, 90, 0, 54)
+abVer.BackgroundTransparency = 1
+abVer.Text = "version 1.0  |  Free Tier"
+abVer.TextColor3 = Color3.fromRGB(100, 100, 120)
+abVer.TextSize = 11
+abVer.Font = Enum.Font.Gotham
+abVer.TextXAlignment = Enum.TextXAlignment.Left
+abVer.ZIndex = 7
+abVer.Parent = abBigCard
+
+-- Info rows About
+local abInfos = {
+    {"Developer", "XraxorHub Team"},
+    {"Version",   "1.0 (Free)"},
+    {"Status",    "Active"},
+    {"Support",   "Discord Server"},
+    {"License",   "Free to use"},
+}
+
+for i, info in ipairs(abInfos) do
+    local rf = Instance.new("Frame")
+    rf.Size = UDim2.new(1, -8, 0, 42)
+    rf.BackgroundColor3 = Color3.fromRGB(15, 15, 18)
+    rf.BorderSizePixel = 0
+    rf.LayoutOrder = i + 1
+    rf.ZIndex = 6
+    rf.Parent = abScroll
+    Instance.new("UICorner", rf).CornerRadius = UDim.new(0, 10)
+    local rfs = Instance.new("UIStroke", rf)
+    rfs.Color = Color3.fromRGB(35, 35, 45)
+    rfs.Thickness = 1
+
+    local rl = Instance.new("TextLabel")
+    rl.Size = UDim2.new(0.4, 0, 1, 0)
+    rl.Position = UDim2.new(0, 14, 0, 0)
+    rl.BackgroundTransparency = 1
+    rl.Text = info[1]
+    rl.TextColor3 = Color3.fromRGB(100, 100, 120)
+    rl.TextSize = 11
+    rl.Font = Enum.Font.Gotham
+    rl.TextXAlignment = Enum.TextXAlignment.Left
+    rl.ZIndex = 7
+    rl.Parent = rf
+
+    local rv = Instance.new("TextLabel")
+    rv.Size = UDim2.new(0.55, 0, 1, 0)
+    rv.Position = UDim2.new(0.43, 0, 0, 0)
+    rv.BackgroundTransparency = 1
+    rv.Text = info[2]
+    rv.TextColor3 = Color3.fromRGB(210, 210, 225)
+    rv.TextSize = 11
+    rv.Font = Enum.Font.GothamBold
+    rv.TextXAlignment = Enum.TextXAlignment.Left
+    rv.ZIndex = 7
+    rv.Parent = rf
+end
+
+-- NAV ITEMS + SWITCHING
+local navItems = {
+    {label = "Key System", id = "key"},
+    {label = "Changelog",  id = "changelog"},
+    {label = "About",      id = "about"},
+}
+
+local panels = {
+    key = keyPanel,
+    changelog = changelogPanel,
+    about = aboutPanel,
+}
+
+local pageTitles = {
+    key = "  Key System",
+    changelog = "  Changelog",
+    about = "  About",
+}
+
+local navFrames = {}
+local activeNav = "key"
+
+local function setActiveNav(id)
+    activeNav = id
+    for navId, frame in pairs(navFrames) do
+        if navId == id then
+            frame.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+            frame.BackgroundTransparency = 0
+        else
+            frame.BackgroundTransparency = 1
+        end
+    end
+    for panelId, panel in pairs(panels) do
+        panel.Visible = (panelId == id)
+    end
+    pageTitle.Text = pageTitles[id] or ""
+end
+
+for i, item in ipairs(navItems) do
+    local navBtn = Instance.new("TextButton")
+    navBtn.Size = UDim2.new(0.88, 0, 0, 36)
+    navBtn.Position = UDim2.new(0.06, 0, 0, 198 + (i-1)*44)
+    navBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+    navBtn.BackgroundTransparency = 1
+    navBtn.BorderSizePixel = 0
+    navBtn.Text = ""
+    navBtn.ZIndex = 5
+    navBtn.Parent = sidebar
+    Instance.new("UICorner", navBtn).CornerRadius = UDim.new(0, 8)
+    navFrames[item.id] = navBtn
+
+    local navLabel = Instance.new("TextLabel")
+    navLabel.Size = UDim2.new(1, -16, 1, 0)
+    navLabel.Position = UDim2.new(0, 12, 0, 0)
+    navLabel.BackgroundTransparency = 1
+    navLabel.Text = item.label
+    navLabel.TextColor3 = Color3.fromRGB(170, 170, 190)
+    navLabel.TextSize = 12
+    navLabel.Font = Enum.Font.Gotham
+    navLabel.TextXAlignment = Enum.TextXAlignment.Left
+    navLabel.ZIndex = 6
+    navLabel.Parent = navBtn
+
+    navBtn.MouseButton1Click:Connect(function()
+        playClick()
+        setActiveNav(item.id)
+    end)
+end
+
+setActiveNav("key")
+
+-- FOOTER
+local footer = Instance.new("Frame")
+footer.Size = UDim2.new(1, 0, 0, 30)
+footer.Position = UDim2.new(0, 0, 1, -30)
+footer.BackgroundColor3 = Color3.fromRGB(13, 13, 16)
+footer.BorderSizePixel = 0
+footer.ZIndex = 4
+footer.Parent = contentArea
+Instance.new("UICorner", footer).CornerRadius = UDim.new(0, 14)
+
+local footerFix = Instance.new("Frame")
+footerFix.Size = UDim2.new(1, 0, 0.5, 0)
+footerFix.BackgroundColor3 = Color3.fromRGB(13, 13, 16)
+footerFix.BorderSizePixel = 0
+footerFix.ZIndex = 4
+footerFix.Parent = footer
+
+local footerDiv = Instance.new("Frame")
+footerDiv.Size = UDim2.new(1, 0, 0, 1)
+footerDiv.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+footerDiv.BorderSizePixel = 0
+footerDiv.ZIndex = 5
+footerDiv.Parent = footer
+
+local footerText = Instance.new("TextLabel")
+footerText.Size = UDim2.new(1, -20, 1, 0)
+footerText.Position = UDim2.new(0, 10, 0, 0)
+footerText.BackgroundTransparency = 1
+footerText.Text = "XraxorHub  |  version 1.0  |  Free Tier  |  2026"
+footerText.TextColor3 = Color3.fromRGB(55, 55, 70)
+footerText.TextSize = 10
+footerText.Font = Enum.Font.Gotham
+footerText.TextXAlignment = Enum.TextXAlignment.Left
+footerText.ZIndex = 5
+footerText.Parent = footer
+
+print("XraxorHub Key System loaded!")
